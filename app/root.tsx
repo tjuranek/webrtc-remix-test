@@ -11,7 +11,7 @@ import styles from "./styles/app.css";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "WebRTC-Remix-Test",
   viewport: "width=device-width,initial-scale=1",
 });
 
@@ -29,7 +29,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-gray-100">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
