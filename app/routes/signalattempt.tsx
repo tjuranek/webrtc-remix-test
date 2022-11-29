@@ -57,10 +57,6 @@ export default function Index() {
   async function createOffer() {
     const connection = new RTCPeerConnection(servers);
 
-    connection.onicecandidate = () => {
-      console.log("test");
-    };
-
     localStream?.getTracks().forEach((track) => {
       connection.addTrack(track, localStream);
     });
@@ -74,8 +70,6 @@ export default function Index() {
     const offer = await connection.createOffer();
     await connection.setLocalDescription(offer);
     setPeerConnection(connection);
-
-    console.log("offer", offer);
   }
 
   return (

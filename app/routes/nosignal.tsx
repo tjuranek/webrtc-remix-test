@@ -75,7 +75,6 @@ export default function Index() {
 
     const answer = JSON.parse(copyAnswer);
     if (!connection.currentRemoteDescription) {
-      console.log("in if");
       connection.setRemoteDescription(answer);
     }
   }

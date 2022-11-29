@@ -1,14 +1,13 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import { emitter } from "~/events/emitter.server";
+import { getEmitter } from "~/events/emitter.server";
 import { useEventSource } from "~/events/useEventSource";
 
 export async function action({ request }: ActionArgs) {
   const { message } = Object.fromEntries(await request.formData());
 
-  console.log(emitter.eventNames());
-  console.log(emitter.emit("messageReceived", message as string));
+  const emitter = getEmitter("1234");
 
   return json({ ok: true });
 }

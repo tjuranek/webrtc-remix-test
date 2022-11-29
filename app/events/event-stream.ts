@@ -14,7 +14,6 @@ export function eventStream(request: Request, init: InitFunction) {
 
       let closed = false;
       let close = () => {
-        console.log("in close");
         if (closed) return;
         cleanup();
         closed = true;

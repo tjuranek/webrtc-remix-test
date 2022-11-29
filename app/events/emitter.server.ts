@@ -1,19 +1,25 @@
 import { EventEmitter } from "events";
 
-let emitter: EventEmitter;
+let emitters: Map<string, EventEmitter>;
 
 declare global {
-  var __emitter: EventEmitter | undefined;
+  var __emitters: Map<string, EventEmitter> | undefined;
 }
 
 if (process.env.NODE_ENV === "production") {
-  emitter = new EventEmitter();
+  emitters = new Map<string, EventEmitter>();
 } else {
-  if (!global.__emitter) {
-    global.__emitter = new EventEmitter();
+  if (!global.__emitters) {
+    global.__emitters = new Map<string, EventEmitter>();
   }
 
-  emitter = global.__emitter;
+  emitters = global.__emitters;
 }
 
-export { emitter };
+export function getEmitter(name: string) {
+  if (!emitters.get(name)) {
+    emitters.set(name, new EventEmitter());
+  }
+
+  return emitters.get(name) as EventEmitter;
+}
