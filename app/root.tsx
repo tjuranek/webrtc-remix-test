@@ -7,7 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import styles from "./styles/app.css";
+import tailwind from "./styles/tailwind.css";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -17,7 +17,7 @@ export const meta: MetaFunction = () => ({
 
 export const links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: styles },
+    { rel: "stylesheet", href: tailwind },
     { rel: "stylesheet", href: "https://rsms.me/inter/inter.css" },
   ];
 };
