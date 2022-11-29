@@ -1,4 +1,4 @@
-import { getEmitter } from "~/events/emitter.server";
+import { getEmitter } from "~/services";
 
 interface Room {
   name: string;

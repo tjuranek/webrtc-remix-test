@@ -1,6 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
-import { getEmitter } from "~/events/emitter.server";
-import { eventStream } from "~/events/event-stream";
+import { getEmitter } from "~/services";
+import { createEventStreamResponse } from "~/utils";
 
 export function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
@@ -10,7 +10,7 @@ export function loader({ request }: LoaderArgs) {
     throw new Error("Name required when subscribing to room event stream.");
   }
 
-  return eventStream(request, (send) => {
+  return createEventStreamResponse(request, (send) => {
     const emitter = getEmitter(name);
 
     emitter.addListener("NeedsOffer", handleNeedsOffer);

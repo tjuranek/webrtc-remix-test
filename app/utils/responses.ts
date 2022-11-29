@@ -1,8 +1,11 @@
-type InitFunction = (send: SendFunction) => CleanupFunction;
-type SendFunction = (event: string, data: string) => void;
 type CleanupFunction = () => void;
+type SendFunction = (event: string, data: string) => void;
+type InitFunction = (send: SendFunction) => CleanupFunction;
 
-export function eventStream(request: Request, init: InitFunction) {
+export function createEventStreamResponse(
+  request: Request,
+  init: InitFunction
+) {
   let stream = new ReadableStream({
     start(controller) {
       let encoder = new TextEncoder();
