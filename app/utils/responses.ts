@@ -1,5 +1,5 @@
 type CleanupFunction = () => void;
-type SendFunction = (event: string, data: string) => void;
+type SendFunction = (data: string) => void;
 type InitFunction = (send: SendFunction) => CleanupFunction;
 
 export function createEventStreamResponse(
@@ -9,9 +9,17 @@ export function createEventStreamResponse(
   let stream = new ReadableStream({
     start(controller) {
       let encoder = new TextEncoder();
-      let send = (event: string, data: string) => {
-        controller.enqueue(encoder.encode(`event: ${event}\n`));
-        controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+      let send = (data: any) => {
+        const stringifiedData = JSON.stringify(data);
+
+        if (!stringifiedData) {
+          throw new Error(
+            "Tried to send an event with data not JSON compatible."
+          );
+        }
+
+        controller.enqueue(encoder.encode(`event: message\n`));
+        controller.enqueue(encoder.encode(`data: ${stringifiedData}\n\n`));
       };
       let cleanup = init(send);
 

@@ -1,5 +1,5 @@
 import type { LoaderArgs } from "@remix-run/node";
-import { getEmitter } from "~/services";
+import { setupEmitterListener } from "~/services";
 import { createEventStreamResponse } from "~/utils";
 
 export function loader({ request }: LoaderArgs) {
@@ -11,15 +11,8 @@ export function loader({ request }: LoaderArgs) {
   }
 
   return createEventStreamResponse(request, (send) => {
-    const emitter = getEmitter(name);
-
-    emitter.addListener("NeedsOffer", handleNeedsOffer);
-    function handleNeedsOffer() {
-      send("message", "NeedsOffer");
-    }
-
-    return () => {
-      emitter.removeListener("NeedsOffer", handleNeedsOffer);
-    };
+    return setupEmitterListener(name, (data: any) => {
+      send(data);
+    });
   });
 }

@@ -48,7 +48,7 @@ export default function Room() {
     <>
       <h1>Room</h1>
       <p>{connectionStatus}</p>
-      <p>{messages?.[0] || "waiting..."}</p>
+      <p>{messages?.[0]?.payload || "waiting..."}</p>
     </>
   );
 }

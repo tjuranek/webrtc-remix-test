@@ -1,4 +1,4 @@
-import { getEmitter } from "~/services";
+import { getEmitMessage } from "~/services";
 
 interface Room {
   name: string;
@@ -30,15 +30,15 @@ export function connectToRoom(name: string) {
   }
 
   const room = rooms.get(name) as Room;
-  const emitter = getEmitter(name);
+  const emitMessage = getEmitMessage(name);
 
   if (!room.offer) {
-    emitter.emit("NeedsOffer");
+    emitMessage({ action: "NeedsOffer", payload: "payload" });
     return;
   }
 
   if (room.offer && !room.answer) {
-    emitter.emit("NeedsAnswer");
+    emitMessage({ action: "NeedsAnswer", payload: "payload" });
     return;
   }
 

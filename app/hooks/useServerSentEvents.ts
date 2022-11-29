@@ -34,7 +34,9 @@ export function useServerSentEvents(params: UseServerSentEventsParams) {
     };
 
     eventSource.onmessage = (event: MessageEvent) => {
-      setMessages([...messages, event.data]);
+      const message = JSON.parse(event.data);
+
+      setMessages([...messages, message]);
       onMessage?.(event.data);
     };
 
