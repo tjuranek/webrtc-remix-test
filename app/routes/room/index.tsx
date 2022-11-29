@@ -1,7 +1,7 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useFetcher, useLoaderData } from "@remix-run/react";
-import { useEventSource } from "~/events/useEventSource";
+import { useServerSentEvents } from "~/hooks";
 import { connectToRoom } from "~/services/room.service";
 
 export function loader({ request }: LoaderArgs) {
@@ -30,14 +30,25 @@ export default function Room() {
   const { name } = useLoaderData<typeof loader>();
   const fetcher = useFetcher();
 
-  const message = useEventSource(`/room/events?name=${name}`, () => {
-    fetcher.submit({ name }, { method: "post" });
+  const { connectionStatus, messages } = useServerSentEvents({
+    href: `/room/events?name=${name}`,
+    onConnect: onSseConnect,
+    onMessage: onSseMessage,
   });
+
+  function onSseConnect() {
+    fetcher.submit({ name }, { method: "post" });
+  }
+
+  function onSseMessage(message: any) {
+    console.log(message);
+  }
 
   return (
     <>
       <h1>Room</h1>
-      <p>{message || "waiting..."}</p>
+      <p>{connectionStatus}</p>
+      <p>{messages?.[0] || "waiting..."}</p>
     </>
   );
 }
