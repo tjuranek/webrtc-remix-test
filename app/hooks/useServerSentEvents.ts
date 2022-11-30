@@ -3,12 +3,17 @@ import { EventSourceStatus } from "~/enums";
 import { useClientHydrated } from "~/hooks/useClientHydrated";
 
 type OnConnectFunction = () => void;
-type OnMessageFunction = (data: any) => void;
+type OnMessageFunction = (data: MessageData) => void;
 
 interface UseServerSentEventsParams {
   href: string;
   onConnect?: OnConnectFunction;
   onMessage?: OnMessageFunction;
+}
+
+export interface MessageData {
+  action: String;
+  payload: any;
 }
 
 export function useServerSentEvents(params: UseServerSentEventsParams) {
@@ -34,10 +39,10 @@ export function useServerSentEvents(params: UseServerSentEventsParams) {
     };
 
     eventSource.onmessage = (event: MessageEvent) => {
-      const message = JSON.parse(event.data);
+      const message = JSON.parse(event.data) as MessageData;
+      messages.push(message);
 
-      setMessages([...messages, message]);
-      onMessage?.(event.data);
+      onMessage?.(message);
     };
 
     eventSource.onerror = () => {
