@@ -51,7 +51,7 @@ export function useServerSentEvents(params: UseServerSentEventsParams) {
 
     setTimeout(() => {
       onConnect?.();
-    }, 1);
+    }, 1000);
   }, [clientHydrated]);
 
   return { connectionStatus, messages };
